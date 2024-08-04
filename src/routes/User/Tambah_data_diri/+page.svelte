@@ -1,25 +1,46 @@
 <script>
 	import Navbar from '../../../components/Navbar.svelte';
 	import Footer from '../../../components/Footer.svelte';
+	import axios from 'axios';
 	let Name = '';
 	let address = '';
 	let birthPlaceDate = '';
 	let phoneNumber = '';
 	let classification = '';
 	let subClassification = '';
-
-	const handleSubmit = (event) => {
-		event.preventDefault();
-		// Handle form submission
-		console.log({
-			Name,
-			address,
-			birthPlaceDate,
-			phoneNumber,
-			classification,
-			subClassification
-		});
-	};
+	let tLahir = '';
+	let location = '';
+	let data = '';
+	function handleSubmit() {
+		let token = localStorage.getItem('token');
+		axios
+			.post(
+				'https://sinaker.pocari.id/api/datadiri',
+				{
+					name: Name,
+					alamat: address,
+					lokasi : location,
+					tanggal_lahir: birthPlaceDate,
+					tempat_lahir: tLahir,
+					no_hp: phoneNumber,
+					klasifikasi_pilihan: classification,
+					sub_klasifikasi_pilihan: subClassification
+				},
+				{
+					headers: {
+						Authorization: `Bearer ${token}`
+					}
+				}
+			)
+			.then((response) => {
+				status = true;
+				data = response.data;
+				console.log(data);
+			})
+			.catch((error) => {
+				console.error('Ada kesalahan:', error);
+			});
+	}
 </script>
 
 <Navbar />
@@ -40,20 +61,28 @@
 					<input type="text" bind:value={address} placeholder="Alamat" />
 				</div>
 				<div>
-					<input type="text" bind:value={birthPlaceDate} placeholder="Tempat Tanggal Lahir" />
+					<input type="date" bind:value={birthPlaceDate} placeholder="Tanggal Lahir" />
+				</div>
+				<div>
+					<input type="text" bind:value={tLahir} placeholder="Tempat Lahir" />
+				</div>
+				<div>
+					<input type="text" bind:value={location} placeholder="Lokasi" />
 				</div>
 				<div>
 					<input type="text" bind:value={phoneNumber} placeholder="No Handphone" />
 				</div>
 				<div>
 					<select bind:value={classification}>
-						<option value="" disabled selected>Pilih Klasifikasi</option>
+						<option value="">Pilih Klasifikasi</option>
+						<option value="teknik informatika">teknik informatika</option>
 						<!-- Add your options here -->
 					</select>
 				</div>
 				<div>
 					<select bind:value={subClassification}>
-						<option value="" disabled selected>Pilih Sub Klasifikasi</option>
+						<option value="">Pilih Sub Klasifikasi</option>
+						<option value="komputer">Komputer</option>
 						<!-- Add your options here -->
 					</select>
 				</div>
@@ -85,8 +114,6 @@
 		object-fit: cover;
 		border-radius: 5px;
 		border: 1px solid #ccc;
-        
-        
 	}
 	.form-section {
 		flex: 1;

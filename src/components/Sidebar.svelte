@@ -1,220 +1,405 @@
 <script>
-	import { BarChartLineFill, PeopleFill, HouseFill, RecordFill } from 'svelte-bootstrap-icons';
-	import { onMount } from 'svelte';
-	
-	let isSidebarOpen = true;
+	import {
+		HouseDoorFill,
+		BriefcaseFill,
+		ChevronDown,
+		ChevronUp,
+		BuildingsFill,
+		ClockFill,
+		PeopleFill,
+		PersonFillCheck,
+		CalendarPlusFill,
 
-	function toggleSidebar() {
-		isSidebarOpen = !isSidebarOpen;
-	}
+		Chat
+
+
+
+	} from 'svelte-bootstrap-icons';
+
+	
+	export let active = 'Dashboard';
+	export let isOpen = false;
+	export let pagePointer;
+	const handleOpen = () => (isOpen = !isOpen);
+	let isOpenCompany = false;
+
+	const handleOpenCompany = () => {
+		isOpenCompany = !isOpenCompany;
+	};
 </script>
 
-<div class="sidebar" class:sidebar-open={isSidebarOpen}>
-	<div class="profile">
-		<img src="/profile.jpg" alt="Profile Picture" />
-		<div class="welcome-text">
-			<p style="font-size: 14px; font-weight:600;">Selamat Datang</p>
-			<p style="font-size: 14px; margin-top:1px;">Adeline Patsy</p>
+<aside>
+	<div class="sidebar">
+		<div class="flex-column p-3" style="gap: 14px;">
+			<img src="/images/avatar.png" class="polished-img" />
+			<div>
+				<div class="flex flex-direction-col flex-center-horizontal">
+					<div class="welcome-sidebar">Selamat Datang</div>
+					<div class="name-sidebar">Jane Doe</div>
+				</div>
+			</div>
+
+			<ul class="sidebar-menu">
+				{#if pagePointer == 'ams'}
+					<li>
+						<a
+							href="/Admin_citratama/dashboard"
+							class="menu {active == 'Dashboard' ? 'menu-active' : ''}"
+						>
+							<HouseDoorFill
+								width="20"
+								height="20"
+								color={active == 'Dashboard' ? '#00195E' : '#00195E'}
+							/>
+							<p class="body-side {active == 'Dashboard' ? 'text-active' : ''}">Beranda</p>
+						</a>
+					</li>
+					<li>
+						<button
+							class="menu {isOpen ? 'menu-active' : ''} justify-content-between"
+							on:click={handleOpen}
+						>
+							<div class="icon-text-gap">
+								<BriefcaseFill width="20" height="20" color={isOpen ? '#00195E' : '#00195E'} />
+								<p class="body-small-semi-bold {isOpen ? 'text-active' : ''}">Pelamar</p>
+							</div>
+							{#if isOpen}
+								<ChevronUp width="20" height="20" color="#00195E" />
+							{:else}
+								<ChevronDown width="20" height="20" color="#00195E" />
+							{/if}
+						</button>
+						{#if isOpen}
+							<div class="menu-dropdown">
+								<a href="/Admin_citratama/pelamar" class="menu-dropdown-item">
+									<div class="flex gap-4">
+										<BriefcaseFill width="20" height="20" color="transparent" />
+										<p
+											class="body-small-semi-bold {active == 'Pelamar Kerja' ? 'text-active' : ''}"
+										>
+											Data Pelamar
+										</p>
+									</div>
+								</a>
+								<a href="/Admin_citratama/persetujuan" class="menu-dropdown-item">
+									<div class="flex gap-4">
+										<BriefcaseFill width="20" height="20" color="transparent" />
+										<p class="body-small-semi-bold {active == 'Persetujuan' ? 'text-active' : ''}">
+											Persetujuan
+										</p>
+									</div>
+								</a>
+								<a href="/Admin_citratama/penerimaan-pelamar" class="menu-dropdown-item">
+									<div class="flex gap-4">
+										<BriefcaseFill width="20" height="20" color="transparent" />
+										<p class="body-small-semi-bold {active == 'Penerimaan' ? 'text-active' : ''}">
+											Penerimaan-pelamar
+										</p>
+									</div>
+								</a>
+								<a href="/Admin_citratama/berita" class="menu-dropdown-item">
+									<div class="flex gap-4">
+										<BriefcaseFill width="20" height="20" color="transparent" />
+										<p class="body-small-semi-bold {active == 'Berita' ? 'text-active' : ''}">
+											Berita
+										</p>
+									</div>
+								</a>
+								<a href="/Admin_citratama/akun-pelamar" class="menu-dropdown-item">
+									<div class="flex gap-4">
+										<BriefcaseFill width="20" height="20" color="transparent" />
+										<p class="body-small-semi-bold {active == 'Berita' ? 'text-active' : ''}">
+											Akun Pelamar
+										</p>
+									</div>
+								</a>
+							</div>
+						{/if}
+					</li>
+					<li>
+						<button
+							class="menu {isOpenCompany ? 'menu-active' : ''} justify-content-between"
+							on:click={handleOpenCompany}
+						>
+							<div class="icon-text-gap">
+								<BuildingsFill
+									width="20"
+									height="20"
+									color={isOpenCompany ? '#00195E' : '#00195E'}
+								/>
+								<p class="body-small-semi-bold {isOpenCompany ? 'text-active' : ''}">Perusahaan</p>
+							</div>
+							{#if isOpenCompany}
+								<ChevronUp width="20" height="20" color="#00195E" />
+							{:else}
+								<ChevronDown width="20" height="20" color="#00195E" />
+							{/if}
+						</button>
+						{#if isOpenCompany}
+							<div class="menu-dropdown">
+								<a href="/Admin_citratama/perusahaan" class="menu-dropdown-item">
+									<div class="icon-text-gap">
+										<BuildingsFill width="20" height="20" color="transparent" />
+										<p
+											class="body-small-semi-bold {active == 'Data Perusahaan'
+												? 'text-active'
+												: ''}"
+										>
+											Data Perusahaan
+										</p>
+									</div>
+								</a>
+								<a href="/Admin_citratama/akun-perusahaan" class="menu-dropdown-item">
+									<div class="icon-text-gap">
+										<BuildingsFill width="20" height="20" color="transparent" />
+										<p
+											class="body-small-semi-bold {active == 'Akun Perusahaan'
+												? 'text-active'
+												: ''}"
+										>
+											Akun Perusahaan
+										</p>
+									</div>
+								</a>
+							</div>
+						{/if}
+						
+					</li>
+
+					<li>
+						<a
+							href="/Admin_citratama/jadwal"
+							class="menu {active == 'Paket Kursus' ? 'menu-active' : ''}"
+						>
+							<ClockFill
+								width="20"
+								height="20"
+								color={active == 'Paket Kursus' ? '#00195E' : '#00195E'}
+							/>
+							<p
+								class="body-small-semi-bold {active == 'Jadwal'
+									? '00195E'
+									: '00195E'}"
+							>
+								jadwal
+							</p>
+						</a>
+					</li>
+					<li>
+						<a
+							href="/Admin_citratama/chatbot"
+							class="menu {active == 'Paket Kursus' ? 'menu-active' : ''}"
+						>
+							<Chat
+								width="20"
+								height="20"
+								color={active == 'Paket Kursus' ? '#00195E' : '#00195E'}
+							/>
+							<p
+								class="body-small-semi-bold {active == 'Jadwal'
+									? '00195E'
+									: '00195E'}"
+							>
+								Chatbot
+							</p>
+						</a>
+					</li>
+
+
+					<!-- Additional Menu Items -->
+				{:else if pagePointer == 'mitra'}
+					<li>
+						<a
+							href="/Admin_mitra/dashboard"
+							class="menu body-small-semi-bold {active == 'Dashboard' ? 'menu-active' : ''}"
+						>
+							<HouseDoorFill
+								width="20"
+								height="20"
+								color={active == 'Dashboard' ? '#3951A8' : '#8191AC'}
+							/>
+							<p>Beranda</p>
+						</a>
+					</li>
+					<li>
+						<a
+							href="/Admin_mitra/pelamar"
+							class="menu {active == 'Paket Kursus' ? 'menu-active' : ''}"
+						>
+							<PeopleFill
+								width="20"
+								height="20"
+								color={active == 'Paket Kursus' ? '#00195E' : '#00195E'}
+							/>
+							<p
+								class="body-small-semi-bold {active == 'Jadwal'
+									? '00195E'
+									: '00195E'}"
+							>
+								Data Pelamar 
+							</p>
+						</a>
+					</li>
+					<li>
+						<a
+							href="/Admin_mitra/persetujuan"
+							class="menu {active == 'Paket Kursus' ? 'menu-active' : ''}"
+						>
+							<PersonFillCheck
+								width="20"
+								height="20"
+								color={active == 'Paket Kursus' ? '#00195E' : '#00195E'}
+							/>
+							<p
+								class="body-small-semi-bold {active == 'Jadwal'
+									? '00195E'
+									: '00195E'}"
+							>
+								Persetujuan Pelamar
+							</p>
+						</a>
+					</li>
+					<li>
+						<a
+							href="/Admin_mitra/penerimaan-pelamar"
+							class="menu {active == 'Paket Kursus' ? 'menu-active' : ''}"
+						>
+							<PersonFillCheck
+								width="20"
+								height="20"
+								color={active == 'Paket Kursus' ? '#00195E' : '#00195E'}
+							/>
+							<p
+								class="body-small-semi-bold {active == 'Jadwal'
+									? '00195E'
+									: '00195E'}"
+							>
+								Penerimaan Pelamar
+							</p>
+						</a>
+					</li>
+					<li>
+						<a
+							href="/Admin_mitra/jadwal"
+							class="menu {active == 'Paket Kursus' ? 'menu-active' : ''}"
+						>
+							<CalendarPlusFill
+								width="20"
+								height="20"
+								color={active == 'Paket Kursus' ? '#00195E' : '#00195E'}
+							/>
+							<p
+								class="body-small-semi-bold {active == 'Jadwal'
+									? '00195E'
+									: '00195E'}"
+							>
+								jadwal
+							</p>
+						</a>
+					</li>
+
+				{/if}
+			</ul>
+		</div>
+		<div class="flex-column gap-2 px-4 py-3">
+			<div class="h5">Citratama citratama_indonesia?igsh</div>
+			<div class="body-small-reguler">©2024 CITRATAMA. Semua hak dilindungi.</div>
 		</div>
 	</div>
-	<ul class="menu">
-		<li>
-			<a class="a-menu" href="#"><p class="p-menu"><BarChartLineFill />Dashboard</p></a>
-		</li>
-		<li>
-			<a class="a-menu" href=""><p class="p-menu"><PeopleFill />Pelamar kerja</p></a>
-			<ul class="submenu">
-				<li>
-					<a class="a-menu" href=""><p class="p-dot"><RecordFill width="6px" />Persetujuan</p></a>
-				</li>
-				<li>
-					<a class="a-menu" href=""><p class="p-dot"><RecordFill width="6px" />Edit Status</p></a>
-				</li>
-				<li>
-					<a class="a-menu" href=""><p class="p-dot"><RecordFill width="6px" />Data Pelamar</p></a>
-				</li>
-			</ul>
-		</li>
-		<li>
-			<a class="a-menu" href=""><p class="p-menu"><HouseFill />Perusahaan</p></a>
-			<ul class="submenu">
-				<li><a class="a-menu" href=""><p class="p-dot"><RecordFill width="6px" />Jadwal</p></a></li>
-				<li>
-					<a class="a-menu" href=""><p class="p-dot"><RecordFill width="6px" />Data Perusahaan</p></a>
-				</li>
-			</ul>
-		</li>
-	</ul>
-	<div class="footer">
-		<p>Admin Perusahaan Citratama Indonesia</p>
-	</div>
-</div>
-
-<button class="toggle-button" class:toggle-left={!isSidebarOpen} on:click={toggleSidebar}>
-	{#if isSidebarOpen}
-		<span>&#x25B2;</span> <!-- Tanda panah ke atas -->
-	{:else}
-		<span>&#x2630;</span> <!-- Tanda panah sandwich menu -->
-	{/if}
-</button>
-
+</aside>
 
 <style>
-	.sidebar {
-		width: 250px;
+	aside {
+		background-color: var(--neutral-white);
+		display: flex;
+		width: 18.5rem;
+		max-width: 18.5rem;
 		height: 100vh;
-		background-color: #ffff;
-		border-right: 1px solid #dee2e6;
+		max-height: 100%;
+		position: sticky;
+		top: 0;
+	}
+
+	aside > div {
+		overflow-y: auto;
+	}
+
+	.sidebar {
 		display: flex;
 		flex-direction: column;
+		flex-grow: 1;
 		justify-content: space-between;
-		transition: transform 0.3s ease;
+		
 	}
 
-	.sidebar.sidebar-open {
-		transform: translateX(0);
+	button {
+		color: #00195e;
+		font-family: 'Poppins', sans-serif;
+		font-weight: 400;
 	}
-
-	.sidebar:not(.sidebar-open) {
-		transform: translateX(-100%);
-	}
-
-	.profile {
-		padding: 20px;
-		display: flex;
-		align-items: center;
-		border-bottom: 1px solid #dee2e6;
-		font-size: 14px;
-	}
-
-	.profile img {
-		width: 50px;
-		height: 50px;
-		border-radius: 20%;
-		margin-right: 10px;
-		object-fit: cover; /* Menambahkan properti ini agar gambar tidak terdistorsi */
-	}
-
-	.p-dot {
-		align-items: center;
-		display: flex;
-		flex-direction: row;
-		gap: 5px;
-		padding-left: 24px;
-		font-size: 12px;
-	}
-
-	.welcome-text p {
+	.sidebar-menu {
+		padding: 0;
 		margin: 0;
+		list-style: none;
+		display: flex;
+		flex-direction: column;
+		gap: 14px;
 	}
-
 	p {
 		font-size: 14px;
 	}
 
-	a {
-		font-size: 12px;
-	}
-
 	.menu {
-		list-style: none;
-		padding: 0;
-		margin: 0;
-	}
-
-	.p-menu {
+		font-family: 'Poppins', sans-serif;
 		display: flex;
-		flex-direction: row;
-		gap: 10px;
+		gap: 24px;
+		padding: 20px 14px;
 		align-items: center;
-	}
-
-	.a-menu {
-		box-sizing: border-box;
-		display: flex;
-		flex-direction: row;
-		align-items: center;
-		padding: 16px 40px;
-		gap: 8px;
-		width: max;
-		height: 56px;
-		background: #ffff;
-
-		flex: none;
-		order: 1;
-		align-self: stretch;
-		flex-grow: 0;
-	}
-
-	.a-menu:active {
-		background-color: f5f6fd;
-		border-left: 2px solid #0469ff;
-	}
-
-	.a-menu:hover {
-		color: #0469ff;
-		border-left: 2px solid #0469ff;
-	}
-
-	.menu a {
-		display: block;
-		padding: 15px 20px;
-		text-decoration: dotted;
-		color: #718284;
-	}
-
-	.menu a:hover {
-		background-color: #e9ecef;
-	}
-
-	.submenu {
-		list-style: none;
-		padding: 0;
-		margin: 0;
-		display: none;
-	}
-
-	.submenu:active {
-		display: block;
-	}
-
-	.menu li:hover .submenu {
-		display: block;
-	}
-
-	.submenu li {
-		border: none;
-	}
-
-	.footer {
-		padding: 20px;
-		border-top: 1px solid #dee2e6;
-		text-align: center;
-	}
-    
-
-	.toggle-button {
-		position: absolute;
-		top: 14px;
-		left: 200px; /* Ubah posisi toggle ke kiri */
-		background-color: transparent; /* Tombol tanpa latar belakang */
-		color: #333; /* Warna ikon */
-		border: none;
-		padding: 10px;
+		border-radius: 0.25rem;
 		cursor: pointer;
-		border-radius: 5px;
-		transition: background-color 0.3s ease;
+		border: none;
+		width: 100%;
+		background-color: transparent;
+		transition: all 0.25s ease;
+		size: 12px;
 	}
 
-	.toggle-button:hover {
-		background-color: #f0f0f0; /* Warna latar belakang ketika dihover */
+	.menu:hover {
+		background-color: #f5f6fd;
+		padding: 1.375rem 0.875rem;
 	}
 
-	.toggle-button span {
-		font-size: 15px; /* Ukuran ikon */
+	.menu-dropdown-item {
+		padding: 20px 14px;
+		transition: all 0.25s ease;
+		border-radius: 0.25rem;
+		display: flex;
+		align-items: center;
 	}
 
-	.toggle-left {
-		left: 20px; /* Ubah kembali ke posisi semula */
+	.menu-dropdown-item:hover {
+		background-color: #f5f6fd;
+	}
+
+	.menu-active {
+		background-color: #f5f6fd;
+	}
+
+	.text-active {
+		color: #667BC6;
+	}
+
+	a {
+		text-decoration: none;
+		color: #00195e;
+	}
+
+	.icon-text-gap {
+		display: flex;
+		align-items: center;
+		gap: 24px;
+	}
+	.body-small-reguler{
+		font-size: 14px;
 	}
 </style>
